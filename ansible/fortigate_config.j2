@@ -1,0 +1,32 @@
+
+- name: Build address Group
+  fortios_firewall_address:
+    vdom: "{{ vdom }}"
+    access_token: "{{ fortigate_token }}"
+    state: "present"
+    firewall_address:
+      name: "{{ address_object_name }}"
+      subnet: "{{ address_object_subnet }}"
+      comment: "Created by Ansible"
+
+- name: Create Firewall Policy 
+  fortios_firewall_policy:
+    vdom: "{{ vdom }}"
+    access_token: "{{ fortigate_token }}"
+    state: "present"
+    firewall_policy:
+      policyid: "{{ policy_id }}"
+      name: "{{ policy_name }}"
+      srcintf: 
+        - name: "awsgeneve"
+      dstintf: 
+        - name: "awsgeneve"
+      srcaddr: 
+        - name: "all"
+      dstaddr: 
+        - name: "{{ address_object_name }}"
+      service: 
+        - name: "{{ service_name }}"
+      action: "{{ action }}"
+      schedule: "{{ schedule }}"
+      logtraffic: "{{ log_traffic }}"

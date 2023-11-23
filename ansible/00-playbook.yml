@@ -1,0 +1,23 @@
+
+- hosts: fortigates
+  connection: httpapi
+  collections:
+  - fortinet.fortios
+  vars:
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 443
+
+  vars_files:
+    - secrets.yml
+
+  tasks:
+      - name: Define a AWS AZ1 Address Group
+        fortios_firewall_address:
+          vdom: "{{ vdom }}"
+          access_token: "{{ fortigate_token }}"
+          state: "present"
+          firewall_address:
+            name: "az1_subnet"
+            subnet: "20.1.1.0 255.255.255.0"
+            comment: "Created by Ansible"

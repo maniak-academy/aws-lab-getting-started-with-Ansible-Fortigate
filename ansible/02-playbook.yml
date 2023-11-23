@@ -1,0 +1,44 @@
+- hosts: fortigates
+  connection: httpapi
+  collections:
+  - fortinet.fortios
+  vars:
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 443
+
+  vars_files:
+    - secrets.yml
+
+  tasks:
+      - name: Define a Juiceshop Web Address
+        fortios_firewall_address:
+          vdom: "{{ vdom }}"
+          access_token: "{{ fortigate_token }}"
+          state: "present"
+          firewall_address:
+            name: "web-add-group"
+            subnet: "20.1.1.14 255.255.255.255"
+            comment: "Created by Ansible"
+            
+      - name: Create Firewall Policy for JucieShop
+        fortios_firewall_policy:
+          vdom: "{{ vdom }}"
+          access_token: "{{ fortigate_token }}"
+          state: "present"
+          firewall_policy:
+            policyid: 2  # Adjust policy ID as needed
+            name: "inbound_juiceshop"
+            srcintf: 
+              - name: "awsgeneve"  # Specify the source interface
+            dstintf: 
+              - name: "awsgeneve"  # Specify the destination interface
+            srcaddr: 
+              - name: "all"
+            dstaddr: 
+              - name: "web-add-group"
+            service: 
+              - name: "HTTP"
+            action: "accept"
+            schedule: "always"
+            logtraffic: "all"

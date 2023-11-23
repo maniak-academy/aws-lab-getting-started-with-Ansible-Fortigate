@@ -1,0 +1,34 @@
+- hosts: fortigates
+  connection: httpapi
+  collections:
+  - fortinet.fortios
+  vars:
+   ansible_httpapi_use_ssl: yes
+   ansible_httpapi_validate_certs: no
+   ansible_httpapi_port: 443
+
+  vars_files:
+    - secrets.yml
+
+  tasks:
+      - name: Create Firewall Policy for Outbound Traffic
+        fortios_firewall_policy:
+          vdom: "{{ vdom }}"
+          access_token: "{{ fortigate_token }}"
+          state: "present"
+          firewall_policy:
+            policyid: 1  # Adjust policy ID as needed
+            name: "oubtound_traffic"
+            srcintf: 
+              - name: "awsgeneve"  # Specify the source interface
+            dstintf: 
+              - name: "awsgeneve"  # Specify the destination interface
+            srcaddr: 
+              - name: "az1_subnet"
+            dstaddr: 
+              - name: "all"
+            service: 
+              - name: "ALL"
+            action: "accept"
+            schedule: "always"
+            logtraffic: "all"
