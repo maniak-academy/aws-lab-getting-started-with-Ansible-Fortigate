@@ -61,7 +61,7 @@ Let's make sure we encrypt the token, so lets use Ansible Vault
 * Run the following command in your terminal:
 
 ```
-ansible-vault encrypt_string '47dwqz9pw6GHy6fbmb6wwh6t8Hc686' --name 'fortigate_token'
+ansible-vault encrypt_string 'hNqc8qxrzyb7c40hQ8txbtjbq6wQnc' --name 'fortigate_token'
 ```
 
 * This will prompt you to create a password. Once you enter and confirm the password, it will output an encrypted string.
