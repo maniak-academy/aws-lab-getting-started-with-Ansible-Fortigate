@@ -1,24 +1,7 @@
 version: '3.8'
 
 services:
-  # hugo:
-  #   image: sebbycorp/hugo-server:latest
-  #   volumes:
-  #     - .:/hugo
-  #   ports:
-  #     - "1313:1313"
-  #   command: ["hugo", "server", "--bind", "0.0.0.0", "--watch"]
-
-  vs-code:
-    image: sebbycorp/xademy-vscode:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - DEFAULT_WORKSPACE=/workspace/code #optional
-    ports:
-      - "8080:8080"
-      
+     
   terminal-server:
     image: sebbycorp/terminal-server:latest
     ports:
