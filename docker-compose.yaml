@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # hugo:
+  #   image: sebbycorp/hugo-server:latest
+  #   volumes:
+  #     - .:/hugo
+  #   ports:
+  #     - "1313:1313"
+  #   command: ["hugo", "server", "--bind", "0.0.0.0", "--watch"]
+
+  vs-code:
+    image: sebbycorp/xademy-vscode:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - DEFAULT_WORKSPACE=/workspace/code #optional
+    ports:
+      - "8080:8080"
+      
+  terminal-server:
+    image: sebbycorp/terminal-server:latest
+    ports:
+      - "7681:7681"
+    environment:
+      - TINI_KILL_PROCESS_GROUP=1
+    # volumes:
+    #   - /your/local/workspace:/workspace
+    entrypoint: ["/sbin/tini", "--"]
+    command: ["ttyd", "-s", "3", "-t", "titleFixed=/bin/sh", "-t", "rendererType=webgl", "-t", "disableLeaveAlert=true", "/bin/sh", "-i", "-l"]
